@@ -1,6 +1,8 @@
 # Task Transit
 
-A smooth and efficient file transition tracker built using React, Django, Axios, and Tailwind CSS.
+A smooth and efficient file transition tracker TaskTransit is a streamlined web application built using React, Django, Axios, and Tailwind CSS. Designed to help users track their files through various pivotal statuses like "Customs Released", "Arrived", and "Delivered". It offers functionalities to add, modify, and remove file entries while also updating their delivery status with ease.
+
+![Alt Text](./frontend/public/Screenshot_Task_Transit.png)
 
 ## Overview
 
