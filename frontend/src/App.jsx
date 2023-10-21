@@ -37,7 +37,7 @@ class App extends Component {
 
   refreshList = () => {
     axios
-      .get("http://localhost:8000/api/files/")
+      .get("https://tasktransitapi-35c0a97b3448.herokuapp.com/api/files/")
       .then((res) => this.setState({ fileList: res.data }))
       .catch((err) => console.log(err));
   };
@@ -57,7 +57,7 @@ class App extends Component {
   // delete file
   deleteFile = (item) => {
     axios
-      .delete(`http://localhost:8000/api/files/${item.id}/`)
+      .delete(`https://tasktransitapi-35c0a97b3448.herokuapp.com/api/files/${item.id}/`)
       .then((res) => this.refreshList())
       .catch((err) => console.error(`Deleting item ${item.id} failed:`, err));
   };
@@ -85,13 +85,13 @@ class App extends Component {
     if (itemData.id) {
       // If itemData has an id, it's an edit, otherwise, it's a new item.
       axios
-        .put(`http://localhost:8000/api/files/${itemData.id}/`, itemData)
+        .put(`https://tasktransitapi-35c0a97b3448.herokuapp.com/api/files/${itemData.id}/`, itemData)
         .then((res) => this.refreshList())
         .catch((err) => console.error("Updating item failed:", err));
     } else {
       // Generate a new ID, add the new item data to the itemList
       axios
-        .post(`http://localhost:8000/api/files/`, itemData)
+        .post(`https://tasktransitapi-35c0a97b3448.herokuapp.com/api/files/`, itemData)
         .then((res) => this.refreshList())
         .catch((err) => console.error("Adding item failed:", err));
     }
