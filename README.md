@@ -27,37 +27,13 @@ Task Transit assists in tracking the transition of files through various statuse
 ## Technology Stack
 
 - **Frontend:** React.js with Tailwind CSS
-- **Backend:** Django
 - **API Calls:** Axios
-- **Database:** (Upcoming) PostgreSQL
 
 ## Setup & Installation
 
 ### Prerequisites
 
 - Node.js
-- Python
-- Pipenv (or other Python environment manager)
-  
-### Backend Setup
-
-1. Navigate to the backend directory.
-2. Set up a virtual environment: 
-    ```shell
-    pipenv shell
-    ```
-3. Install dependencies: 
-    ```shell
-    pipenv install
-    ```
-4. Run migrations (ensure you're in the virtual environment):
-    ```shell
-    python manage.py migrate
-    ```
-5. Run the server:
-    ```shell
-    python manage.py runserver
-    ```
    
 ### Frontend Setup
 
