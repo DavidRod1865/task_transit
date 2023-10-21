@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlane, faShip, faTruck } from '@fortawesome/free-solid-svg-icons'
 import FileModal from "./components/FileModal";
 import axios from 'axios';
+import DataFetcher from "./components/DataFetcher";
 
 class App extends Component {
   constructor(props) {
