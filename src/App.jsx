@@ -80,32 +80,24 @@ class App extends Component {
 
   // submit file to add or edit
   handleFileSubmit = (itemData) => {
+    // Close the modal (if needed) and do additional cleanup/tasks
+    this.toggleModal();
+  
     if (itemData.id) {
+      // If itemData has an id, it's an edit, otherwise, it's a new item.
       axios
         .put(`https://tasktransitapi-35c0a97b3448.herokuapp.com/api/files/${itemData.id}/`, itemData)
-        .then((res) => {
-          this.updateFileInState(res.data);  // Update the local state with the edited item.
-          this.toggleModal();  // Close the modal after successful operation.
-        })
-        .catch((err) => {
-          console.error("Updating item failed:", err);
-          // Provide feedback to the user.
-        });
+        .then((res) => this.refreshList())
+        .catch((err) => console.error("Updating item failed:", err));
     } else {
-      const newItemData = { ...itemData, id: uuidv4() };  // Assign a new UUID to the item.
-  
+      this.addFile(itemData);
+      // Generate a new ID, add the new item data to the itemList
       axios
-        .post(`https://tasktransitapi-35c0a97b3448.herokuapp.com/api/files/`, newItemData)
-        .then((res) => {
-          this.addFileToState(res.data);  // Add the new item with its unique ID to the state.
-          this.toggleModal();
-        })
-        .catch((err) => {
-          console.error("Adding item failed:", err);
-          // Provide feedback to the user.
-        });
+        .post(`https://tasktransitapi-35c0a97b3448.herokuapp.com/api/files/`, itemData)
+        .then((res) => this.refreshList())
+        .catch((err) => console.error("Adding item failed:", err));
     }
-  };  
+  };
   
   closeFileModal = () => {
     this.setState({

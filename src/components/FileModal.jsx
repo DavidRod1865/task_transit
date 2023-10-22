@@ -88,11 +88,12 @@ const FileModal = ({ isOpen, onClose, onAddFile, initialData }) => {
                   onChange={handleChange}
                   className="mt-1 p-2 w-full border rounded-md"
                 >
+                  <option value="" disabled selected>Select a transport mode</option>
                   <option value="Air">Air</option>
                   <option value="Ocean">Ocean</option>
                   <option value="Ground">Domestic</option>
                 </select>
-              
+
                 <label htmlFor="shipper" className="block text-sm font-medium text-gray-700 mt-2">Shipper</label>
                 <input 
                   type="text" 
