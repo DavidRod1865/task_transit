@@ -49,8 +49,8 @@ class App extends Component {
 
   // add new file
   addFile = (newFile) => {
-    this.setState(prevState => ({
-      fileList: [...prevState.fileList, newFile]
+    this.setState((prevState) => ({
+      fileList: [...prevState.fileList, { ...newFile, id: prevState.fileList.length + 1 }],
     }));
   };
 
@@ -79,34 +79,20 @@ class App extends Component {
 
   // submit file to add or edit
   handleFileSubmit = (itemData) => {
+    // Close the modal (if needed) and do additional cleanup/tasks
     this.toggleModal();
-
+  
     if (itemData.id) {
-      // Edit existing file
+      // If itemData has an id, it's an edit, otherwise, it's a new item.
       axios
         .put(`https://tasktransitapi-35c0a97b3448.herokuapp.com/api/files/${itemData.id}/`, itemData)
         .then((res) => this.refreshList())
         .catch((err) => console.error("Updating item failed:", err));
     } else {
-      // Get the highest ID from fileList
-      const highestId = this.state.fileList.length > 0 
-          ? Math.max(...this.state.fileList.map(file => file.id))
-          : 0;
-
-      const newItemData = {
-        ...itemData,
-        id: highestId + 1
-      };
-
-      // Add new file with incremented ID
+      // Generate a new ID, add the new item data to the itemList
       axios
-        .post(`https://tasktransitapi-35c0a97b3448.herokuapp.com/api/files/`, newItemData)
-        .then((res) => {
-          // Update local state to include new file with incremented ID
-          this.setState(prevState => ({
-            fileList: [...prevState.fileList, newItemData]
-          }));
-        })
+        .post(`https://tasktransitapi-35c0a97b3448.herokuapp.com/api/files/`, itemData)
+        .then((res) => this.refreshList())
         .catch((err) => console.error("Adding item failed:", err));
     }
   };
