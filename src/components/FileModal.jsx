@@ -88,7 +88,7 @@ const FileModal = ({ isOpen, onClose, onAddFile, initialData }) => {
                   onChange={handleChange}
                   className="mt-1 p-2 w-full border rounded-md"
                 >
-                  <option value="" disabled selected>Select a transport mode</option>
+                  <option value="" disabled>Select a transport mode</option>
                   <option value="Air">Air</option>
                   <option value="Ocean">Ocean</option>
                   <option value="Ground">Domestic</option>
@@ -216,14 +216,14 @@ const FileModal = ({ isOpen, onClose, onAddFile, initialData }) => {
 
               {/* Submit Button */}
               <div className="mt-4">
-                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">
+                <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded duration-300 transition-transform transform hover:scale-105">
                   Save File
                 </button>
               </div>
             </form>
           </div>
           <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-            <button type="button" onClick={onClose} className="bg-white border border-gray-300 rounded-md px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
+            <button type="button" onClick={onClose} className="bg-white border border-gray-300 rounded-md px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 sm:ml-3 sm:w-auto duration-300 transition-transform transform hover:scale-105">
               Cancel
             </button>
           </div>

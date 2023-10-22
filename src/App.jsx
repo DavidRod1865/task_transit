@@ -1,7 +1,7 @@
-import { Component } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlane, faShip, faTruck } from '@fortawesome/free-solid-svg-icons'
-import FileModal from "./components/FileModal";
+import { Component } from 'react';
+import FileModal from './components/FileModal';
+import FileList from './components/FileList';
+import Files from './components/Files';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -9,6 +9,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentStage: "In Transit",
       viewDelivered: false,
       fileList: [],
       isModalOpen: false,
@@ -28,8 +29,8 @@ class App extends Component {
         delivered: false,
         notes: "",
       }
-
     };
+    this.changeStage = this.changeStage.bind(this);
   }
 
   componentDidMount() {
@@ -90,7 +91,6 @@ class App extends Component {
         .then((res) => this.refreshList())
         .catch((err) => console.error("Updating item failed:", err));
     } else {
-      this.addFile(itemData);
       // Generate a new ID, add the new item data to the itemList
       axios
         .post(`https://tasktransitapi-35c0a97b3448.herokuapp.com/api/files/`, itemData)
@@ -101,6 +101,7 @@ class App extends Component {
   
   closeFileModal = () => {
     this.setState({
+      currentStage: "In Transit",
       isModalOpen: false,
       editingFile: null,
       activeItem: {
@@ -121,109 +122,46 @@ class App extends Component {
     });
   };  
 
-  // display delivered or not delivered files
-  displayDelivered = (status) => {
-    if (status) {
-      return this.setState({ viewDelivered: true });
-    }
-
-    return this.setState({ viewDelivered: false });
+  changeStage = (stage) => {
+    this.setState({ currentStage: stage });
   };
 
-  // render file list
-  renderFileList = () => {
-    return (
-      <div className="flex">
-        <span
-          className={this.state.viewDelivered ? "p-2 cursor-pointer bg-blue-500 text-white" : "p-2 cursor-pointer"}
-          onClick={() => this.displayDelivered(true)}
-        >
-          Delivered
-        </span>
-        <span
-          className={this.state.viewDelivered ? "p-2 cursor-pointer" : "p-2 cursor-pointer bg-blue-500 text-white"}
-          onClick={() => this.displayDelivered(false)}
-        >
-          Not Delivered
-        </span>
-      </div>
-    );
-  };
-  
-  // render files
-  renderFiles = () => {
-    const { viewDelivered, fileList } = this.state;
-    const files = fileList.filter(file => file.delivered === viewDelivered);
-  
-    return files.map((file) => (
-      <li
-        key={file.id}
-        className="flex justify-between items-center p-4 border-b border-gray-200"
-      >
-        <div
-          className={`mr-2 ${viewDelivered ? "line-through text-gray-500" : ""}`}
-          title={file.mawb_mbl}
-        >
-          {file.transport_mode === "Air" ? (
-            <FontAwesomeIcon icon={faPlane} />
-          ) : (
-            file.transport_mode === "Ocean" ? (
-            <FontAwesomeIcon icon={faShip} /> 
-          ) : (
-            <FontAwesomeIcon icon={faTruck} />
-          ))}
-          <p>{file.file_number}: {file.shipper} → {file.consignee}</p>
-          <ul>
-            <li>MAWB/MBL: {file.mawb_mbl}</li>
-            <li>HAWB/HBL: {file.hawb_hbl}</li>
-            <li>ETD: {file.etd}</li>
-            <li>ETA: {file.eta}</li>
-            <li>Customs Release: {file.customs_release ? "Yes" : "No"}</li>
-            <li>Arrived: {file.arrived ? "Yes" : "No"}</li>
-            <li>Delivered: {file.delivered ? "Yes" : "No"}</li>
-            <li>Notes: {file.notes}</li>
-          </ul>
-        </div>
-        <div>
-          <button className="bg-gray-500 text-white p-2 rounded mr-2" onClick={() => this.editFile(file)}>Edit</button>
-          <button className="bg-red-500 text-white p-2 rounded" onClick={() => this.deleteFile(file)}>Delete</button>
-        </div>
-      </li>
-    ));
-  };
-
-render() {
-    const { isModalOpen, activeItem } = this.state;
+  render() {
+    const { isModalOpen, activeItem, fileList } = this.state;
 
     return (
-      <main className="container mx-auto">
-        <div className="flex justify-center items-center">
-          <img src="arrow.png" alt="logo" className="w-16 h-16"/>
-          <h1 className="text-black text-5xl uppercase text-center my-4">Task Transit</h1>
+      <main className='bg-amber-100 h-screen'>
+        <div className="flex justify-center items-center pt-6 mb-6">
+          <img src="arrow.png" alt="logo" className="w-16 h-16 mr-3"/>
+          <h1 className="text-black text-4xl uppercase font-bold">Task Transit</h1>
         </div>
         <div className="flex justify-center">
-          <div className="w-full sm:w-4/5 md:w-1/2 mx-auto p-0">
-            <div className="p-3 shadow-lg">
-              {this.renderFileList()}
-              <ul className="border border-gray-200">
-                {this.renderFiles()}
-              </ul>
-              <div className="mb-4 mt-2">
-                <button 
-                  className="bg-blue-500 text-white px-4 py-2 rounded"
-                  onClick={this.toggleModal}
-                  >
-                  Add File
-                </button>         
-                {isModalOpen && (
-                  <FileModal 
-                  isOpen={isModalOpen}
-                  onClose={this.closeFileModal}
-                  onAddFile={this.handleFileSubmit}
-                  initialData={activeItem}
-                  />
-                )}
-              </div>
+          <div className="w-full sm:w-5/6 md:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto p-0">
+            <FileList
+              currentStage={this.state.currentStage} 
+              changeStage={this.changeStage} 
+            />
+            <Files
+              currentStage={this.state.currentStage}
+              fileList={fileList} 
+              editFile={this.editFile} 
+              deleteFile={this.deleteFile} 
+            />
+            <div className="mt-4 flex justify-center md:block">
+              <button 
+                className="bg-blue-500 hover:bg-blue-600 text-[1.45rem] md:text-[1rem] text-white px-5 py-2 rounded duration-300 transition-transform transform hover:scale-105"
+                onClick={this.toggleModal}
+              >
+                Add File
+              </button>         
+              {isModalOpen && (
+                <FileModal 
+                isOpen={isModalOpen}
+                onClose={this.closeFileModal}
+                onAddFile={this.handleFileSubmit}
+                initialData={activeItem}
+                />
+              )}
             </div>
           </div>
         </div>
