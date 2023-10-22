@@ -49,8 +49,8 @@ class App extends Component {
 
   // add new file
   addFile = (newFile) => {
-    this.setState((prevState) => ({
-      fileList: [...prevState.fileList, { ...newFile, id: prevState.fileList.length + 1 }],
+    this.setState(prevState => ({
+      fileList: [...prevState.fileList, newFile]
     }));
   };
 
@@ -79,20 +79,24 @@ class App extends Component {
 
   // submit file to add or edit
   handleFileSubmit = (itemData) => {
-    // Close the modal (if needed) and do additional cleanup/tasks
     this.toggleModal();
-  
+
     if (itemData.id) {
-      // If itemData has an id, it's an edit, otherwise, it's a new item.
+      // Edit existing file
       axios
         .put(`https://tasktransitapi-35c0a97b3448.herokuapp.com/api/files/${itemData.id}/`, itemData)
         .then((res) => this.refreshList())
         .catch((err) => console.error("Updating item failed:", err));
     } else {
-      // Generate a new ID, add the new item data to the itemList
+      // Add new file
       axios
         .post(`https://tasktransitapi-35c0a97b3448.herokuapp.com/api/files/`, itemData)
-        .then((res) => this.refreshList())
+        .then((res) => {
+          // Update local state to include new file with server-assigned ID
+          this.setState(prevState => ({
+            fileList: [...prevState.fileList, res.data]
+          }));
+        })
         .catch((err) => console.error("Adding item failed:", err));
     }
   };
