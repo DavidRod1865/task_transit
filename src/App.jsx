@@ -135,13 +135,6 @@ class App extends Component {
     this.setState({ currentStage: stage });
   };
 
-  useEffect(() => {
-      if (isAuthenticated) {
-          // Set your authentication state or perform other side effects
-          handleSuccessfulLogin();
-      }
-  }, [isAuthenticated]);
-
   handleSuccessfulLogin = () => {
     this.setState({ isAuthenticated: true });
   }
@@ -151,7 +144,7 @@ class App extends Component {
     const { isModalOpen, activeItem, fileList, isAuthenticated } = this.state;
     
     if (!isAuthenticated) {
-      return <Login />;
+      return <Login onClick={this.handleSuccessfulLogin()} />;
     }
     return (
       <main className='bg-amber-100 h-screen'>
