@@ -10,7 +10,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     domain='dev-sepjltc5sis0ivcn.us.auth0.com'
     clientId='ogODyc9E2zVu7HM0v5d7XXKULOdWpL4n'
     authorizationParams={{
-      redirect_uri: window.location.origin,
+      redirect_uri: "https://task-transit.vercel.app/home",
     }}
   >
     <React.StrictMode>
