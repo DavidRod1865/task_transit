@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, useEffect } from 'react';
 import FileModal from './components/FileModal';
 import FileList from './components/FileList';
 import Files from './components/Files';
@@ -14,7 +14,7 @@ class App extends Component {
       viewDelivered: false,
       fileList: [],
       isModalOpen: false,
-      isAuthenticated: false,
+      isAuthenticated: true,
       editingFile: null,
       activeItem: {
         id: null,
@@ -38,6 +38,13 @@ class App extends Component {
   componentDidMount() {
     this.refreshList();
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    // Check if isAuthenticated changed
+    if (prevState.isAuthenticated !== this.state.isAuthenticated && this.state.isAuthenticated) {
+        this.handleSuccessfulLogin();
+    }
+}
 
   refreshList = () => {
     axios
@@ -128,13 +135,21 @@ class App extends Component {
     this.setState({ currentStage: stage });
   };
 
+  useEffect(() => {
+      if (isAuthenticated) {
+          // Set your authentication state or perform other side effects
+          handleSuccessfulLogin();
+      }
+  }, [isAuthenticated]);
+
   handleSuccessfulLogin = () => {
     this.setState({ isAuthenticated: true });
   }
-  
-  render() {
-    const { isModalOpen, activeItem, fileList, isAuthenticated } = this.state;
 
+  
+  render(){
+    const { isModalOpen, activeItem, fileList, isAuthenticated } = this.state;
+    
     if (!isAuthenticated) {
       return <Login />;
     }
