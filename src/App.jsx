@@ -4,6 +4,7 @@ import FileList from './components/FileList';
 import Files from './components/Files';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
+import Login from './components/Login';
 
 class App extends Component {
   constructor(props) {
@@ -13,6 +14,7 @@ class App extends Component {
       viewDelivered: false,
       fileList: [],
       isModalOpen: false,
+      isAuthenticated: false,
       editingFile: null,
       activeItem: {
         id: null,
@@ -126,9 +128,16 @@ class App extends Component {
     this.setState({ currentStage: stage });
   };
 
+  handleSuccessfulLogin = () => {
+    this.setState({ isAuthenticated: true });
+  }
+  
   render() {
-    const { isModalOpen, activeItem, fileList } = this.state;
+    const { isModalOpen, activeItem, fileList, isAuthenticated } = this.state;
 
+    if (!isAuthenticated) {
+      return <Login />;
+    }
     return (
       <main className='bg-amber-100 h-screen'>
         <div className="flex justify-center items-center pt-6 mb-6">
@@ -139,7 +148,7 @@ class App extends Component {
           <div className="w-full sm:w-5/6 md:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto p-0">
             <FileList
               currentStage={this.state.currentStage} 
-              changeStage={this.changeStage} 
+              changeStage={this.changeStage}
             />
             <Files
               currentStage={this.state.currentStage}
