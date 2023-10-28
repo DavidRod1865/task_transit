@@ -6,8 +6,8 @@ import LoginButton from "./components/LoginButton";
 function App() {
     return (
         <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<LoginButton />} />
+            <Route path="/" element={<LoginButton />} />
+            <Route path="/home" element={<HomePage />} />
         </Routes>
     );
 }
