@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import LoginButton from './components/LoginButton';
+import LoginButton from './LoginButton';
 
 class Login extends Component {
     handleSuccessfulLogin = () => {

@@ -5,7 +5,7 @@ import FileList from './components/FileList';
 import Files from './components/Files';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import Login from './Login';
+import Login from './components/Login';
 
 
 class App extends Component{
