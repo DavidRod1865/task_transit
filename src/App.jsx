@@ -140,11 +140,19 @@ class App extends Component{
     if (!isAuthenticated) {
       return <Redirect to="/login" />;
     }
-
+    
     return (
       <Router>
         <div>
-          <Route path="/login" component={Login} />
+          <Route 
+          path="/login" 
+          render={() =>
+            !isAuthenticated ? (
+              <Login />
+            ) : (
+              <Redirect to="/" />
+            )}
+            />
 
           <Route
             path="/"
