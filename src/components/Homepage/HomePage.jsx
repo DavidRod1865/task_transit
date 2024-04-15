@@ -1,10 +1,10 @@
 import { Component } from 'react';
-import FileModal from './FileModal';
-import FileList from './FileList';
-import Files from './Files';
+import FileModal from '../Files/FileModal';
+import FileList from '../Files/FileList';
+import Files from '../Files/Files';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import LogoutButton from './LogoutButton';
+import LogoutButton from '../LogoutButton';
 
 class HomePage extends Component{
   constructor(props) {
@@ -34,9 +34,9 @@ class HomePage extends Component{
     this.changeStage = this.changeStage.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.refreshList();
-  }
+  };
 
   refreshList = () => {
     axios
@@ -137,7 +137,7 @@ class HomePage extends Component{
           <h1 className="text-black text-4xl uppercase font-bold">Task Transit</h1>
         </div>
         <div className="flex justify-center">
-          <div className="w-full sm:w-5/6 md:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto p-0">
+          <div className="w-full mx-2 p-0">
             <FileList
               currentStage={this.state.currentStage} 
               changeStage={this.changeStage}
@@ -173,5 +173,3 @@ class HomePage extends Component{
 }
 
 export default HomePage;
-  
-  
