@@ -1,12 +1,13 @@
-import { Component } from 'react';
-import FileModal from '../Files/FileModal';
-import FileList from '../Files/FileList';
-import Files from '../Files/Files';
-import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
-import LogoutButton from '../LogoutButton';
+import { Component } from "react";
+import FileModal from "../Files/FileModal";
+import FileList from "../Files/FileList";
+import Files from "../Files/Files";
+import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
+import LogoutButton from "../LogoutButton";
+import Nav from "../Nav";
 
-class HomePage extends Component{
+class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +30,7 @@ class HomePage extends Component{
         arrived: false,
         delivered: false,
         notes: "",
-      }
+      },
     };
     this.changeStage = this.changeStage.bind(this);
   }
@@ -60,7 +61,9 @@ class HomePage extends Component{
   // delete file
   deleteFile = (item) => {
     axios
-      .delete(`https://tasktransitapi-35c0a97b3448.herokuapp.com/api/files/${item.id}/`)
+      .delete(
+        `https://tasktransitapi-35c0a97b3448.herokuapp.com/api/files/${item.id}/`
+      )
       .then((res) => this.refreshList())
       .catch((err) => console.error(`Deleting item ${item.id} failed:`, err));
   };
@@ -68,7 +71,7 @@ class HomePage extends Component{
   // edit file
   editFile = (item) => {
     const { fileList } = this.state;
-    let updatedFiles = fileList.map(file =>
+    let updatedFiles = fileList.map((file) =>
       file.id === item.id ? { ...file, ...item } : file
     );
 
@@ -84,22 +87,28 @@ class HomePage extends Component{
   handleFileSubmit = (itemData) => {
     // Close the modal (if needed) and do additional cleanup/tasks
     this.toggleModal();
-  
+
     if (itemData.id) {
       // If itemData has an id, it's an edit, otherwise, it's a new item.
       axios
-        .put(`https://tasktransitapi-35c0a97b3448.herokuapp.com/api/files/${itemData.id}/`, itemData)
+        .put(
+          `https://tasktransitapi-35c0a97b3448.herokuapp.com/api/files/${itemData.id}/`,
+          itemData
+        )
         .then((res) => this.refreshList())
         .catch((err) => console.error("Updating item failed:", err));
     } else {
       // Generate a new ID, add the new item data to the itemList
       axios
-        .post(`https://tasktransitapi-35c0a97b3448.herokuapp.com/api/files/`, itemData)
+        .post(
+          `https://tasktransitapi-35c0a97b3448.herokuapp.com/api/files/`,
+          itemData
+        )
         .then((res) => this.refreshList())
         .catch((err) => console.error("Adding item failed:", err));
     }
   };
-  
+
   closeFileModal = () => {
     this.setState({
       currentStage: "In Transit",
@@ -119,53 +128,35 @@ class HomePage extends Component{
         arrived: false,
         delivered: false,
         notes: "",
-      }
+      },
     });
-  };  
+  };
 
   changeStage = (stage) => {
     this.setState({ currentStage: stage });
   };
 
-  render(){
+  render() {
     const { isModalOpen, activeItem, fileList } = this.state;
-        
+
     return (
-      <main className='bg-amber-100 h-screen'>
-        <div className="flex justify-center items-center pt-6 mb-6">
-          <img src="arrow.png" alt="logo" className="w-16 h-16 mr-3"/>
-          <h1 className="text-black text-4xl uppercase font-bold">Task Transit</h1>
-        </div>
-        <div className="flex justify-center">
-          <div className="w-full mx-2 p-0">
-            <FileList
-              currentStage={this.state.currentStage} 
-              changeStage={this.changeStage}
-              />
-            <Files
-              currentStage={this.state.currentStage}
-              fileList={fileList} 
-              editFile={this.editFile} 
-              deleteFile={this.deleteFile} 
-              />
-            <div className="mt-4 flex justify-center md:block">
-              <button 
-                className="bg-blue-500 hover:bg-blue-600 text-[1.45rem] md:text-[1rem] text-white px-5 py-2 rounded duration-300 transition-transform transform hover:scale-105"
-                onClick={this.toggleModal}
-                >
-                Add File
-              </button>         
-              {isModalOpen && (
-                <FileModal 
-                isOpen={isModalOpen}
-                onClose={this.closeFileModal}
-                onAddFile={this.handleFileSubmit}
-                initialData={activeItem}
-                />
-                )}
-            </div>
-            <LogoutButton />
-          </div>
+      <main className="bg-slate-500 h-screen flex">
+        <Nav
+          currentStage={this.state.currentStage}
+          changeStage={this.changeStage}
+          toggleModal={this.toggleModal}
+          isModalOpen={isModalOpen}
+          closeFileModal={this.closeFileModal}
+          handleFileSubmit={this.handleFileSubmit}
+          activeItem={activeItem}
+        />
+        <div className="w-full p-0">
+          <Files
+            currentStage={this.state.currentStage}
+            fileList={fileList}
+            editFile={this.editFile}
+            deleteFile={this.deleteFile}
+          />
         </div>
       </main>
     );
