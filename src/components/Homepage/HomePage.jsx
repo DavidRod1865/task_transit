@@ -1,10 +1,7 @@
 import { Component } from "react";
-import FileModal from "../Files/FileModal";
-import FileList from "../Files/FileList";
 import Files from "../Files/Files";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
-import LogoutButton from "../LogoutButton";
 import Nav from "../Nav";
 
 class HomePage extends Component {

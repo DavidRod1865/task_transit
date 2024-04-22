@@ -10,7 +10,8 @@ import PropTypes from "prop-types";
 
 const FileItem = ({ file, currentStage, editFile, deleteFile }) => (
   <>
-    <tbody key={file.id}
+    <tbody
+      key={file.id}
       className={` bg-white text-black hover:bg-cyan-900 hover:text-white ${
         currentStage === "Delivered"
           ? "line-through decoration-red-500 text-gray-500"
@@ -18,8 +19,8 @@ const FileItem = ({ file, currentStage, editFile, deleteFile }) => (
       }`}
       title={file.mawb_mbl}
     >
-      <tr>
-        <td>
+      <tr className="text-center">
+        <td className="border-2 border-solid border-slate-400">
           {file.transport_mode === "Air" ? (
             <FontAwesomeIcon icon={faPlane} />
           ) : file.transport_mode === "Ocean" ? (
@@ -28,18 +29,33 @@ const FileItem = ({ file, currentStage, editFile, deleteFile }) => (
             <FontAwesomeIcon icon={faTruck} />
           )}
         </td>
-        <td>{file.file_number}</td>
-        <td>
-          {file.shipper} → {file.consignee}
+        <td className="border-2 border-solid border-slate-400">{file.file_number}</td>
+        <td className="border-2 border-solid border-slate-400">{file.shipper}</td>
+        <td className="border-2 border-solid border-slate-400">{file.consignee}</td>
+        <td className="border-2 border-solid border-slate-400">{file.mawb_mbl}</td>
+        <td className="border-2 border-solid border-slate-400">{file.hawb_hbl}</td>
+        <td className="border-2 border-solid border-slate-400">{file.etd}</td>
+        <td className="border-2 border-solid border-slate-400">{file.eta}</td>
+        <td className="border-2 border-solid border-slate-400">{file.customs_release ? "Customs Released" : "No"}</td>
+        <td className="border-2 border-solid border-slate-400">{file.arrived ? "Arrived" : "No"}</td>
+        <td className="border-2 border-solid border-slate-400">{file.delivered ? "Delivered" : "No"}</td>
+        <td>{!file.notes ? "No" : 
+          <><button
+            className="btn text-black"
+            onClick={() => document.getElementById("my_modal_4").showModal()}
+          >Notes</button>
+          <dialog id="my_modal_4" className="modal">
+            <div className="modal-box w-2/6 max-w-5xl text-left text-black">
+              <h3 className="font-bold text-lg">Notes:</h3>
+              <p className="py-4 text-base">{file.notes}</p>
+              <div className="modal-action">
+                <form method="dialog">
+                  <button className="btn">Close</button>
+                </form>
+              </div>
+            </div>
+          </dialog></>}
         </td>
-        <td>MAWB/MBL: {file.mawb_mbl}</td>
-        <td>HAWB/HBL: {file.hawb_hbl}</td>
-        <td>ETD: {file.etd}</td>
-        <td>ETA: {file.eta}</td>
-        <td>Customs Release: {file.customs_release ? "Yes" : "No"}</td>
-        <td>Arrived: {file.arrived ? "Yes" : "No"}</td>
-        <td>Delivered: {file.delivered ? "Yes" : "No"}</td>
-        <td>Notes: {file.notes}</td>
         <td>
           <div className="flex flex-col">
             <button

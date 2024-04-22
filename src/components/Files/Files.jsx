@@ -27,12 +27,13 @@ const Files = ({ currentStage, fileList, editFile, deleteFile }) => {
 
   return (
     <div className="overflow-x-auto">
-      <table className="table table-xs">
+      <table className="table table-sm">
         <thead className="bg-white text-black">
-          <tr>
-            <th></th>
+          <tr className="text-center">
+            <th>Mode</th>
             <th>File Number</th>
-            <th>Shipper → Consignee</th>
+            <th>Shipper</th>
+            <th>Consignee</th>
             <th>MAWB/MBL</th>
             <th>HAWB/HBL</th>
             <th>ETD</th>
